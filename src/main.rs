@@ -4,6 +4,7 @@ mod Conv2d;
 mod Linear;
 
 use ndarray::{Array3, Array2, array};
+use std::io::empty;
 use std::{env, io, fs, path::Path};
 use std::error::Error;
 use Conv2d::convolve;
@@ -14,7 +15,6 @@ const DATASET_PATH: &str = "/home/adi/Documents/rustnn/caltech101/101_ObjectCate
 
 fn predict() -> Result<(), Box<dyn Error>> {
     
-
     Ok(())
 }
 
@@ -54,7 +54,30 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 
 
-    //let arr
+    let sobel_k: Array3<f32> = array![
+        [
+            [-1.0, -2.0, -1.0],
+            [0.0, 0.0, 0.0],
+            [1.0, 2.0, 1.0],
+        ],
+        [
+            [-1.0, -2.0, -1.0],
+            [0.0, 0.0, 0.0],
+            [1.0, 2.0, 1.0],
+        ],
+        [
+            [-1.0, -2.0, -1.0],
+            [0.0, 0.0, 0.0],
+            [1.0, 2.0, 1.0],
+        ],
+    ];
+
+
+    show_image_ndarray(&arr)?;
+    let output2d = convolve(&sobel_k, &arr, 1, 1);
+    let output3d = utils::arr2to3(&output2d);
+    show_image_ndarray(&output3d)?;
+
 
 
 
@@ -63,6 +86,18 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+
+fn add_length(s: &str) -> Vec<String> {
+    let mut wordvec: Vec<String> = Vec::new();
+    let iter = s.split_whitespace();
+
+    for word in iter {
+        let word = word.to_owned() + " " + &word.len().to_string();
+        wordvec.push(word);
+    }
+    return wordvec;
+}
+
 
 
 /*
